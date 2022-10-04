@@ -15,7 +15,7 @@ public class Wizards {
         return wizards;
     }
 
-    public void setWizard(List<Wizard> wizards) {
+    public void setWizards(List<Wizard> wizards) {
         this.wizards = wizards;
     }
 }

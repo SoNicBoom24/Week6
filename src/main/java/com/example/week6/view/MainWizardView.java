@@ -64,22 +64,6 @@ public class MainWizardView extends VerticalLayout {
 
         add(nameField, gender, position, dollarsField, school, house, btnhori);
         this.fetchWizards();
-//        List<Wizard> w = WebClient
-//                .create()
-//                .get()
-//                .uri("http://localhost:8080/wizards")
-//                .retrieve()
-//                .bodyToMono(new ParameterizedTypeReference<List<Wizard>>() {})
-//                .block();
-//        nameField.setValue(w.get(Index).getName());
-//        gender.setValue(w.get(Index).getSex() == 'm' ? "Male" : "Female");
-//        position.setValue(w.get(Index).getPosition().equals("student") ? "Student" : "Teacher");
-//        dollarsField.setValue((double) w.get(Index).getMoney());
-//        school.setValue(w.get(Index).getSchool());
-//        house.setValue(w.get(Index).getHouse());
-
-//        wizards.setWizard(w);
-//        this.updateAll();
 
         back.addClickListener(e -> {
             Index = Math.max(Index-1, 0);
@@ -103,7 +87,9 @@ public class MainWizardView extends VerticalLayout {
                     .bodyToMono(Wizard.class)
                     .block();
             Index = wizards.getWizard().size();
+            this.fetchWizards();
             this.updateAll();
+
         });
 
         update.addClickListener(e ->{
@@ -123,6 +109,8 @@ public class MainWizardView extends VerticalLayout {
                     .retrieve()
                     .bodyToMono(Wizard.class)
                     .block();
+            this.fetchWizards();
+            this.updateAll();
         });
 
         delete.addClickListener(e -> {
@@ -144,6 +132,7 @@ public class MainWizardView extends VerticalLayout {
                     .block();
             Index = 0;
             this.fetchWizards();
+            this.updateAll();
         });
 
         next.addClickListener(e -> {
@@ -162,19 +151,17 @@ public class MainWizardView extends VerticalLayout {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Wizard>>() {})
                 .block();
-        this.wizards.setWizard(w);
+        this.wizards.setWizards(w);
         this.updateAll();
     }
 
     private void updateAll() {
-        back.setEnabled(!(Index == 0));
         nameField.setValue(wizards.getWizard().get(Index).getName());
         gender.setValue(wizards.getWizard().get(Index).getSex() == 'm' ? "Male" : "Female");
         position.setValue(wizards.getWizard().get(Index).getPosition().equals("student") ? "Student" : "Teacher");
         dollarsField.setValue((double) wizards.getWizard().get(Index).getMoney());
         school.setValue(wizards.getWizard().get(Index).getSchool());
         house.setValue(wizards.getWizard().get(Index).getHouse());
-        next.setEnabled(!(Index == wizards.getWizard().size()-1));
 
     }
 }
